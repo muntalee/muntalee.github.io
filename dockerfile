@@ -1,11 +1,11 @@
-# jekyll container from ruby alphine image
+# Create a Jekyll container from a Ruby Alpine image
 
-# ruby 2.5.x >
-FROM ruby:2.7-alphine3.15
+# At a minimum, use Ruby 2.5 or later
+FROM ruby:2.7-alpine3.15
 
-# add jekyll dependencies
+# Add Jekyll dependencies to Alpine
 RUN apk update
-RUN apt add --no-cache build-base gcc cmake git 
+RUN apk add --no-cache build-base gcc cmake git
 
-# ruby bundler and jekyll
+# Update the Ruby bundler and install Jekyll
 RUN gem update bundler && gem install bundler jekyll
