@@ -7,6 +7,8 @@
   let searchQuery = $state("");
   let searchInput: HTMLInputElement;
   let searchHasScrolled = $state(false);
+  let searchWasEmpty = true;
+  let workSection: HTMLElement;
   let contactDialog: HTMLDialogElement;
   let copyStatus = $state("");
   let copiedLabel = $state("");
@@ -16,6 +18,22 @@
 
   function updateSearchScroll() {
     searchHasScrolled = searchInput.scrollLeft > 0;
+  }
+
+  function handleProjectSearchInput() {
+    const hasQuery = Boolean(searchInput.value.trim());
+    if (hasQuery && searchWasEmpty) {
+      workSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    searchWasEmpty = !hasQuery;
+    updateSearchScroll();
+  }
+
+  function clearProjectSearch() {
+    searchQuery = "";
+    searchWasEmpty = true;
+    searchInput.scrollLeft = 0;
+    searchHasScrolled = false;
   }
 
   function openContactDialog() {
@@ -227,7 +245,7 @@
       </div>
     </section>
 
-    <section class="work" id="work" aria-labelledby="work-title">
+    <section class="work" id="work" aria-labelledby="work-title" bind:this={workSection}>
       <div class="section-heading">
         <div>
           <h2 id="work-title">Projects</h2>
@@ -244,7 +262,7 @@
             placeholder="Filter projects..."
             aria-label="Filter projects by name, language, or description"
             class:search-scrolled={searchHasScrolled}
-            oninput={updateSearchScroll}
+            oninput={handleProjectSearchInput}
             onscroll={updateSearchScroll}
           />
           {#if searchQuery}
@@ -252,7 +270,7 @@
               class="project-search-clear"
               type="button"
               aria-label="Clear project search"
-              onclick={() => (searchQuery = "")}
+              onclick={clearProjectSearch}
             >×</button>
           {/if}
         </label>

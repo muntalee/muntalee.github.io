@@ -224,8 +224,6 @@ button {
 
 a.contact-value:hover {
   color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 
 .contact-copy {
