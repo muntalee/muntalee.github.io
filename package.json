@@ -5,17 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "build": "npm run check && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^5.0.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "svelte": "^5.57.1"
   },
   "devDependencies": {
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.0",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "svelte-check": "^4.7.6",
     "typescript": "~5.8.3",
     "vite": "^7.1.0"
   }
