@@ -1,5 +1,12 @@
 <script lang="ts">
   let portraitAvailable = $state(true);
+  let searchQuery = $state("");
+  let searchInput: HTMLInputElement;
+  let searchHasScrolled = $state(false);
+
+  function updateSearchScroll() {
+    searchHasScrolled = searchInput.scrollLeft > 0;
+  }
 
   function technologyTone(technology: string) {
     if (["C", "C++"].includes(technology)) return "amber";
@@ -64,6 +71,25 @@
       alt: "Mr. Potato Head Maker in use",
     },
   ];
+
+  let filteredProjects = $derived(
+    projects.filter((project) => {
+      const query = searchQuery.trim().toLowerCase();
+      if (!query) return true;
+
+      const haystack = [
+        project.name,
+        project.title,
+        project.owner,
+        project.description,
+        ...project.stack,
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return haystack.includes(query);
+    }),
+  );
 </script>
 
 <div class="site-shell">
@@ -87,13 +113,13 @@
     <section class="intro" aria-labelledby="intro-title">
       <div class="intro-content">
         <div class="intro-copy">
-          <p class="eyebrow">CS student</p>
+          <p class="eyebrow">cs student · developer</p>
           <h1 id="intro-title">Munta Islam<span>.</span></h1>
           <p class="intro-description">
-            CS student at TMU building games, tools, and web projects.
+            5th year student at TMU building games, tools, and web projects.
           </p>
           <div class="intro-meta">
-            <span>5th year</span>
+            <span>Toronto, Canada</span>
           </div>
         </div>
         {#if portraitAvailable}
@@ -119,32 +145,62 @@
         </div>
       </div>
 
-      <div class="project-grid">
-        {#each projects as project (project.name)}
-          <a
-            class="project-card"
-            href="https://github.com/{project.owner}/{project.name}"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <div class="project-preview">
-              <img src={project.image} alt={project.alt} loading="lazy" />
-            </div>
-            <div class="project-info">
-              <div class="project-title-line">
-                <h3>{project.title}</h3>
-                <span class="project-arrow" aria-hidden="true">↗</span>
-              </div>
-              <p>{project.description}</p>
-              <div class="project-tags" aria-label="Technology stack">
-                {#each project.stack as technology (technology)}
-                  <span class="tag tag-{technologyTone(technology)}">{technology}</span>
-                {/each}
-              </div>
-            </div>
-          </a>
-        {/each}
+      <div class="project-tools">
+        <label class="project-search" aria-label="Search projects">
+          <span>Search</span>
+          <input
+            type="search"
+            bind:value={searchQuery}
+            bind:this={searchInput}
+            placeholder="Filter projects..."
+            aria-label="Filter projects by name, language, or description"
+            class:search-scrolled={searchHasScrolled}
+            oninput={updateSearchScroll}
+            onscroll={updateSearchScroll}
+          />
+          {#if searchQuery}
+            <button
+              class="project-search-clear"
+              type="button"
+              aria-label="Clear project search"
+              onclick={() => (searchQuery = "")}
+            >×</button>
+          {/if}
+        </label>
       </div>
+
+      {#if filteredProjects.length > 0}
+        <div class="project-grid">
+          {#each filteredProjects as project (project.name)}
+            <a
+              class="project-card"
+              href="https://github.com/{project.owner}/{project.name}"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <div class="project-preview">
+                <img src={project.image} alt={project.alt} loading="lazy" />
+              </div>
+              <div class="project-info">
+                <div class="project-title-line">
+                  <h3>{project.title}</h3>
+                  <span class="project-arrow" aria-hidden="true">↗</span>
+                </div>
+                <p>{project.description}</p>
+                <div class="project-tags" aria-label="Technology stack">
+                  {#each project.stack as technology (technology)}
+                    <span class="tag tag-{technologyTone(technology)}">{technology}</span>
+                  {/each}
+                </div>
+              </div>
+            </a>
+          {/each}
+        </div>
+      {:else}
+        <div class="project-empty" aria-live="polite">
+          No projects match “{searchQuery}”.
+        </div>
+      {/if}
     </section>
 
   </main>

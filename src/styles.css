@@ -1,5 +1,5 @@
 :root {
-  font-family: Consolas, "Courier New", monospace;
+  font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   color: #ededed;
   background: #111;
   font-synthesis: none;
@@ -11,7 +11,7 @@
   --muted: #a2a2a2;
   --text: #ededed;
   --accent: #ededed;
-  --mono: Consolas, "Courier New", monospace;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 * {
@@ -64,7 +64,7 @@ button {
 }
 
 .wordmark {
-  font-family: "JetBrains Mono", var(--mono);
+  font-family: var(--mono);
   font-size: 24px;
   letter-spacing: 0;
 }
@@ -222,12 +222,92 @@ button {
   font-size: clamp(28px, 3.5vw, 36px);
   font-weight: 500;
   letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.project-tools {
+  margin-bottom: 24px;
+}
+
+.project-search {
+  display: flex;
+  height: 48px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.01);
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.project-search span {
+  flex-shrink: 0;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.project-search input {
+  height: 20px;
+  min-width: 0;
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  outline: none;
+}
+
+.project-search input.search-scrolled {
+  mask-image: linear-gradient(to right, transparent, #000 18px);
+}
+
+.project-search input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.project-search input::placeholder {
+  color: color-mix(in srgb, var(--muted) 80%, transparent);
+}
+
+.project-search-clear {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  flex-shrink: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.project-search-clear:hover {
+  color: var(--accent);
 }
 
 .project-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 32px 24px;
+}
+
+.project-empty {
+  overflow: hidden;
+  padding: 24px 0 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .project-card {
@@ -428,6 +508,10 @@ button {
   .intro-copy {
     grid-row: 2;
     text-align: center;
+  }
+
+  .intro-meta {
+    justify-content: center;
   }
 
   .portrait {
