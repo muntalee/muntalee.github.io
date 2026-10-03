@@ -1,11 +1,38 @@
 <script lang="ts">
+  import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+  import { faComments } from "@fortawesome/free-solid-svg-icons";
+  import { FontAwesomeIcon } from "@fortawesome/svelte-fontawesome";
+
   let portraitAvailable = $state(true);
   let searchQuery = $state("");
   let searchInput: HTMLInputElement;
   let searchHasScrolled = $state(false);
+  let contactDialog: HTMLDialogElement;
+  let copyStatus = $state("");
+  let copiedLabel = $state("");
+  const emailAddress = "islammuntasirul@gmail.com";
+  const studentEmailAddress = "md.m.islam@torontomu.ca";
+  const discordHandle = "muntalee";
 
   function updateSearchScroll() {
     searchHasScrolled = searchInput.scrollLeft > 0;
+  }
+
+  function openContactDialog() {
+    copyStatus = "";
+    copiedLabel = "";
+    contactDialog.showModal();
+  }
+
+  async function copyContact(value: string, label: string) {
+    try {
+      await navigator.clipboard.writeText(value);
+      copiedLabel = label;
+      copyStatus = "";
+    } catch {
+      copiedLabel = "";
+      copyStatus = `Couldn't copy ${label.toLowerCase()}. Please select and copy it manually.`;
+    }
   }
 
   function technologyTone(technology: string) {
@@ -97,17 +124,79 @@
     <a class="wordmark" href="#top" aria-label="Munta, home">&lt;0^0&gt;</a>
     <nav id="site-nav" class="site-nav" aria-label="Main navigation">
       <a class="social-icon" href="https://github.com/muntalee" target="_blank" rel="noreferrer" aria-label="GitHub">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 .9a11.1 11.1 0 0 0-3.51 21.63c.55.1.76-.24.76-.53v-2.08c-3.1.67-3.76-1.32-3.76-1.32-.5-1.29-1.24-1.63-1.24-1.63-1.01-.69.08-.68.08-.68 1.12.08 1.71 1.15 1.71 1.15 1 .1.76 2.46 3.02 1.87.1-.72.39-1.21.7-1.49-2.48-.28-5.09-1.24-5.09-5.52 0-1.22.44-2.22 1.15-3-.12-.28-.5-1.42.11-2.96 0 0 .94-.3 3.05 1.15a10.6 10.6 0 0 1 5.55 0c2.11-1.45 3.05-1.15 3.05-1.15.61 1.54.23 2.68.11 2.96.72.78 1.15 1.78 1.15 3 0 4.29-2.61 5.24-5.1 5.52.4.34.75 1.02.75 2.06V22c0 .29.2.63.77.52A11.1 11.1 0 0 0 12 .9Z"/>
-        </svg>
+        <FontAwesomeIcon icon={faGithub} />
       </a>
       <a class="social-icon" href="https://www.linkedin.com/in/muntasirul-islam" target="_blank" rel="noreferrer" aria-label="LinkedIn">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M20.45 2H3.55C2.69 2 2 2.68 2 3.52v16.96c0 .84.69 1.52 1.55 1.52h16.9c.86 0 1.55-.68 1.55-1.52V3.52c0-.84-.69-1.52-1.55-1.52ZM7.93 18.45H4.97V9h2.96v9.45ZM6.45 7.71a1.71 1.71 0 1 1 0-3.42 1.71 1.71 0 0 1 0 3.42Zm12 10.74h-2.96v-4.6c0-1.1-.02-2.52-1.54-2.52-1.55 0-1.79 1.2-1.79 2.44v4.68H9.2V9h2.84v1.29h.04c.4-.74 1.36-1.53 2.8-1.53 2.99 0 3.55 1.97 3.55 4.53v5.16Z"/>
-        </svg>
+        <FontAwesomeIcon icon={faLinkedin} />
       </a>
+      <button class="social-icon contact-trigger" type="button" aria-label="Open contact card" onclick={openContactDialog}>
+        <FontAwesomeIcon icon={faComments} />
+      </button>
     </nav>
   </header>
+
+  <dialog class="contact-dialog" bind:this={contactDialog} aria-labelledby="contact-title">
+    <div class="contact-dialog-header">
+      <div>
+        <p class="contact-kicker">CONTACT</p>
+        <h2 id="contact-title">Let’s connect.</h2>
+      </div>
+      <button class="contact-dialog-close" type="button" aria-label="Close contact options" onclick={() => contactDialog.close()}>
+        ×
+      </button>
+    </div>
+    <p class="contact-intro">Choose an email, or find me on Discord.</p>
+    <div class="contact-list">
+      <div class="contact-row">
+        <div class="contact-detail">
+          <span class="contact-label">PERSONAL</span>
+          <a class="contact-value" href="mailto:{emailAddress}">{emailAddress}</a>
+        </div>
+        <button
+          class="contact-copy"
+          class:copied={copiedLabel === "Personal email"}
+          type="button"
+          aria-label={copiedLabel === "Personal email" ? "Personal email copied" : "Copy personal email"}
+          onclick={() => copyContact(emailAddress, "Personal email")}
+        >
+          {copiedLabel === "Personal email" ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <div class="contact-row">
+        <div class="contact-detail">
+          <span class="contact-label">UNIVERSITY</span>
+          <a class="contact-value" href="mailto:{studentEmailAddress}">{studentEmailAddress}</a>
+        </div>
+        <button
+          class="contact-copy"
+          class:copied={copiedLabel === "University email"}
+          type="button"
+          aria-label={copiedLabel === "University email" ? "University email copied" : "Copy university email"}
+          onclick={() => copyContact(studentEmailAddress, "University email")}
+        >
+          {copiedLabel === "University email" ? "Copied" : "Copy"}
+        </button>
+      </div>
+      <div class="contact-row">
+        <div class="contact-detail">
+          <span class="contact-label">DISCORD</span>
+          <span class="contact-value">{discordHandle}</span>
+        </div>
+        <button
+          class="contact-copy"
+          class:copied={copiedLabel === "Discord username"}
+          type="button"
+          aria-label={copiedLabel === "Discord username" ? "Discord username copied" : "Copy Discord username"}
+          onclick={() => copyContact(discordHandle, "Discord username")}
+        >
+          {copiedLabel === "Discord username" ? "Copied" : "Copy"}
+        </button>
+      </div>
+    </div>
+    {#if copyStatus}
+      <p class="contact-status" aria-live="polite">{copyStatus}</p>
+    {/if}
+  </dialog>
 
   <main id="top">
     <section class="intro" aria-labelledby="intro-title">
@@ -207,6 +296,6 @@
 
   <footer class="site-footer">
     <span>© 2026 Munta Islam.</span>
-    <a class="email-link" href="mailto:islammuntasirul@gmail.com">islammuntasirul@gmail.com</a>
+    <a class="email-link" href="mailto:{emailAddress}">{emailAddress}</a>
   </footer>
 </div>
