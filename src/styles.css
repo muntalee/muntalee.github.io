@@ -117,7 +117,7 @@ button {
 }
 
 .intro {
-  padding: 48px 0 32px;
+  padding: 48px 0 48px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -207,7 +207,7 @@ button {
 }
 
 .work {
-  padding: 32px 0 48px;
+  padding: 48px 0 48px;
 }
 
 .section-heading {
@@ -373,7 +373,7 @@ button {
   }
 
   .intro {
-    padding: 40px 0 24px;
+    padding: 48px 0 48px;
   }
 
   .intro-content {
@@ -404,7 +404,7 @@ button {
   }
 
   .work {
-    padding: 32px 0 40px;
+    padding: 48px 0 48px;
   }
 
   .project-grid {
