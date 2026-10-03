@@ -87,14 +87,12 @@
     <section class="intro" aria-labelledby="intro-title">
       <div class="intro-content">
         <div class="intro-copy">
-          <p class="eyebrow">CS student · 5th year</p>
+          <p class="eyebrow">CS student</p>
           <h1 id="intro-title">Munta Islam<span>.</span></h1>
           <p class="intro-description">
             CS student at TMU building games, tools, and web projects.
           </p>
           <div class="intro-meta">
-            <span>Toronto, Canada</span>
-            <span>·</span>
             <span>5th year</span>
           </div>
         </div>
