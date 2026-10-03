@@ -66,13 +66,6 @@
   ];
 </script>
 
-<svelte:head>
-  <meta
-    name="description"
-    content="Munta — computer science student and software developer. Selected projects, open source work, and contact links."
-  />
-</svelte:head>
-
 <div class="site-shell">
   <header class="site-header">
     <a class="wordmark" href="#top" aria-label="Munta, home">&lt;0^0&gt;</a>
